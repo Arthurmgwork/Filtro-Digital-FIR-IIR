@@ -7,22 +7,22 @@ clc
 
 
 resposta = questdlg('Deseja gravar um arquivo de audio?', ...
-    'Reproduzir','Sim', 'Não','Não');
+    'Reproduzir','Sim', 'Nï¿½o','Nï¿½o');
 if strcmp(resposta,'Sim')   % Compara as strings
-    Fs = 16000; %frequência de amostragem
+    Fs = 16000; %frequï¿½ncia de amostragem
     bits = 16; %quantidade de bits do sinal de audio
     channel = 1; %quantidade de canais
-    audio = audiorecorder(Fs, bits, channel); %audiorecordar(frequência de amostragem, número de bits do sinal, número de canais)
-    disp('Gravando') %avisa quando começa a gravar
+    audio = audiorecorder(Fs, bits, channel); %audiorecordar(frequï¿½ncia de amostragem, nï¿½mero de bits do sinal, nï¿½mero de canais)
+    disp('Gravando') %avisa quando comeï¿½a a gravar
     record(audio,5); %vai gravar 5 segundos de audio
     pause(5) %pausa para gravar os 5 segundos de audio
     x = getaudiodata(audio)'; %salvando o audio gravado na variavel x
-    disp('Gravação Encerrada')
+    disp('Gravaï¿½ï¿½o Encerrada')
     t = 0:1/Fs:length(x)*(1/Fs)-(1/Fs);  %criando eixo do tempo
-    ruido = (0.05*sin(4000*2*pi*t))+(0.05*sin(5000*2*pi*t))+(0.05*sin(6000*2*pi*t));%(0.5-rand(1,length(x)))./20; %criando ruído para análise do sinal
-    x = x+ruido; % adicionando ruído no sinal
+    ruido = (0.05*sin(4000*2*pi*t))+(0.05*sin(5000*2*pi*t))+(0.05*sin(6000*2*pi*t));%(0.5-rand(1,length(x)))./20; %criando ruï¿½do para anï¿½lise do sinal
+    x = x+ruido; % adicionando ruï¿½do no sinal
     resposta1 = questdlg('Deseja reproduzir este arquivo de audio?', ...
-    'Reproduzir','Sim', 'Não','Não');
+    'Reproduzir','Sim', 'Nï¿½o','Nï¿½o');
     if strcmp(resposta1,'Sim')   % Compara as strings
         sound(x,Fs);
     end
@@ -53,33 +53,33 @@ ylabel('Amplitude')
 %%%%%%%%%%%%%%%%%%%%%
 
 fftx= abs(fft(x)); %FFT do capeta
-freq = Fs*[1:length(fftx)/2]/length(fftx); %eixo da frequência da fft do capeta
+freq = Fs*[1:length(fftx)/2]/length(fftx); %eixo da frequï¿½ncia da fft do capeta
 
 %%%%%%% PLOT %%%%%%%%
 subplot(2,1,2)
 plot(freq,fftx(1:length(freq)))
 grid on
-title('Espectro da Frequência do Sinal de Entrada')
-xlabel('Frequência(Hz)')
+title('Espectro da Frequï¿½ncia do Sinal de Entrada')
+xlabel('Frequï¿½ncia(Hz)')
 ylabel('Magnitude')
 %%%%%%%%%%%%%%%%%%%%%
 
 
 %% Parametros Pagina 305 do Proakis 2012
-fp = 2900;    %frequência de passagem (passa baixa)
-fs = 4000;     %frequência de parada (passa baixa)
-fc = (fs+fp)/2; %frequência de corte
-ft = fs-fp;      %frequência de transição
+fp = 2900;    %frequï¿½ncia de passagem (passa baixa)
+fs = 4000;     %frequï¿½ncia de parada (passa baixa)
+fc = (fs+fp)/2; %frequï¿½ncia de corte
+ft = fs-fp;      %frequï¿½ncia de transiï¿½ï¿½o
 
-wp = (fp/(Fs/2))*pi; %frequência de passagem normalizada em pi
-ws = (fs/(Fs/2))*pi;  %frequência de parada normalizada em pi
-wc = (fc/(Fs/2))*pi;   %frequência de corte normalizada em pi
-wt = ws-wp;             %frequência de transição
+wp = (fp/(Fs/2))*pi; %frequï¿½ncia de passagem normalizada em pi
+ws = (fs/(Fs/2))*pi;  %frequï¿½ncia de parada normalizada em pi
+wc = (fc/(Fs/2))*pi;   %frequï¿½ncia de corte normalizada em pi
+wt = ws-wp;             %frequï¿½ncia de transiï¿½ï¿½o
 
-Rp = 1;    %Parametro de inicialização do Ripple da faixa de passagem
-As = 1;     %Parametro de inicialização do Ripple da faixa de parada
-sigma1 = 0;  %Parametro de inicialização do sigma 1
-sigma2 = 0;   %Parametro de inicialização do sigma 2
+Rp = 1;    %Parametro de inicializaï¿½ï¿½o do Ripple da faixa de passagem
+As = 1;     %Parametro de inicializaï¿½ï¿½o do Ripple da faixa de parada
+sigma1 = 0;  %Parametro de inicializaï¿½ï¿½o do sigma 1
+sigma2 = 0;   %Parametro de inicializaï¿½ï¿½o do sigma 2
 
 while Rp <= 0.2 || Rp >= 0.25   %faixa de tolerancia para o meu Rippler de faixa de passagem
     sigma1 = sigma1 + 0.0001;
@@ -91,18 +91,18 @@ while As <= 15 || As >= 20      %faixa de tolerancia para o meu Rippler de faixa
     As = -20*log10(sigma2/(1+sigma1));
 end
 
-M = ceil(1.8*pi/wt);    %ordem do filtro, vai depender da janela que foi usada, olhar a página 330 do livro proakis 2012
+M = ceil(1.8*pi/wt);    %ordem do filtro, vai depender da janela que foi usada, olhar a pï¿½gina 330 do livro proakis 2012
 L = length(x);               %tamanho do sinal de entrada
 window = rectwin(M);          %janela retangular
 
 
-%% Criação do Filtro
+%% Criaï¿½ï¿½o do Filtro
 
-%%%%% Página 332 PDF Proakis 2012 %%%%%
+%%%%% Pï¿½gina 332 PDF Proakis 2012 %%%%%
 alpha = (M-1)/2;        
 n = (0:1:(M-1));
 m = (n - alpha);  %eixo pro lado negativo e positivo
-wc_d = (wc/pi);    %frequência de corte desnormalizada
+wc_d = (wc/pi);    %frequï¿½ncia de corte desnormalizada
 hd = wc_d*(sin(pi*wc_d*m)./(pi*wc_d*m));  %Filtro Ideal   x=fc*m  %%%  passa baixa: fc * sen(pi*x)/(pi*x) %%%%% passa alta: fc * -cos(pi*x)/(pi*x) 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 hd = hd;
@@ -143,16 +143,16 @@ ylabel('Polo Imaginario')
 %%%%%%%%%%%%%%%%%%%%%
 
 
-%% Convolução
+%% Convoluï¿½ï¿½o
 
-% signal = conv(x,h); %Convolução do sinal de entrada com o sinal de entrada
+% signal = conv(x,h); %Convoluï¿½ï¿½o do sinal de entrada com o sinal de entrada
 % 
 % %%%%%%% PLOT %%%%%%%%
 % figure(3)
 % subplot(2,1,1)
 % plot(0:1/Fs:(1/Fs)*length(signal)-(1/Fs),signal)
 % grid on
-% title('Sinal de Entrada Convoluído com o Filtro')
+% title('Sinal de Entrada Convoluï¿½do com o Filtro')
 % xlabel('Tempo(s)')
 % ylabel('Amplitude')
 % %%%%%%%%%%%%%%%%%%%%%
@@ -161,26 +161,26 @@ ylabel('Polo Imaginario')
 % fftx= abs(fft(signal)); %FFT do capeta
 % 
 % if (floor(length(fftx)/2)-(length(fftx)/2)) == 0
-%     freq = Fs*[1:length(fftx)/2 -length(fftx)/2:-1]/length(fftx); %eixo da frequência da fft do capeta
+%     freq = Fs*[1:length(fftx)/2 -length(fftx)/2:-1]/length(fftx); %eixo da frequï¿½ncia da fft do capeta
 % else
-%     freq = Fs*[1:length(fftx)/2 -length(fftx)/2:0]/length(fftx); %eixo da frequência da fft do capeta
+%     freq = Fs*[1:length(fftx)/2 -length(fftx)/2:0]/length(fftx); %eixo da frequï¿½ncia da fft do capeta
 % end
 % 
 % %%%%%%% PLOT %%%%%%%%
 % subplot(2,1,2)
 % plot(freq,fftx)
 % grid on
-% title('Espectro da Frequência do Sinal Filtrado Pela Convolução')
-% xlabel('Frequência(Hz)')
+% title('Espectro da Frequï¿½ncia do Sinal Filtrado Pela Convoluï¿½ï¿½o')
+% xlabel('Frequï¿½ncia(Hz)')
 % ylabel('Magnitude')
 % %%%%%%%%%%%%%%%%%%%%%
 
 
-%% Implementação com Equação de Diferenças
+%% Implementaï¿½ï¿½o com Equaï¿½ï¿½o de Diferenï¿½as
 
 figure(4)
 
-for k=M:L %Equação de diferença
+for k=M:L %Equaï¿½ï¿½o de diferenï¿½a
     x_filtrado(k) = sum(x(k:-1:k-M+1).*h(1:end));
 end
 
@@ -196,62 +196,19 @@ ylabel('Amplitude')
 
 
 fftx= abs(fft(x_filtrado)); %FFT do capeta
-freq = Fs*[1:length(fftx)/2]/length(fftx); %eixo da frequência da fft do capeta
+freq = Fs*[1:length(fftx)/2]/length(fftx); %eixo da frequï¿½ncia da fft do capeta
 
 %%%%%%% PLOT %%%%%%%%
 subplot(2,1,2)
 plot(freq,fftx(1:length(freq)))
 grid on
-title('Espectro da Frequência do Sinal de Entrada Filtrado')
-xlabel('Frequência(Hz)')
+title('Espectro da Frequï¿½ncia do Sinal de Entrada Filtrado')
+xlabel('Frequï¿½ncia(Hz)')
 ylabel('Magnitude')
 axis([1 8000 0 max(fftx)*1.15])
 %%%%%%%%%%%%%%%%%%%%%
 
-
-%% Testes futuros
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CLASSIFICADOR DE TIPOS DE KRL %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% if (floor(M/2)-(M/2)) == 0
-%     simetria = h(1:floor(M/2)) - h(round(M/2)+1:M);
-%     if x(1:floor(M/2)) == x(M:-1:round(M/2)+1)
-%         disp('Tipo 2 - Simetrico Par(Descentralizado)')
-%         [Hr,w,d,L]=Hr_Type2(h);
-%     else
-%         disp('Tipo 4 - Assimetrico Par(Descentralizado)')
-%         [Hr,w,d,L]=Hr_Type4(h);
-%     end
-% else
-%     if x(1:floor(M/2)) == x(M:-1:round(M/2)+1)%mean(simetria) == zeros
-%         disp('Tipo 1 - Simetrico Impar(Centralizado)')
-%         [Hr,w,d,L]=Hr_Type1(h);
-%     else
-%         disp('Tipo 3 - Assimetrico Impar(Centralizado)') 
-%         [Hr,w,d,L]=Hr_Type3(h);
-%     end
-% end
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% figure(5)
-% a = d;
-% n=0:M-1;
-% amax = max(a)+1; amin = min(a)-1;
-% % subplot(2,2,1); stem(n,h); axis([-1 2*L+1 amin amax])
-% % xlabel('n'); ylabel('h(n)'); title('Impulse Response')
-% % subplot(3,1,3); stem(0:length(a)-1,a); axis([-1 2*L+1 amin amax])
-% % xlabel('n'); ylabel('a(n)'); title('a(n) coefficients')
-% % subplot(3,1,3); plot(w./pi,Hr);grid on
-% xlabel('frequency in pi units'); ylabel('Hr')
-% title('Type-X Amplitude Response')
-% % subplot(2,2,4); zplane(h,1)
-% 
-% 
-% plot((0:pi/length(h):pi-pi/length(h))-(pi/2),-20*log10(abs(fft(h))))
-
-fvtool(h)
+fvtool(h) % Respsota do Filtro
 
 
 
