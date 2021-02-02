@@ -6,6 +6,7 @@ clc
 %% Sinal de Entrada
 
 
+
 resposta = questdlg('Deseja gravar um arquivo de audio?', ...
     'Reproduzir','Sim', 'N�o','N�o');
 if strcmp(resposta,'Sim')   % Compara as strings
